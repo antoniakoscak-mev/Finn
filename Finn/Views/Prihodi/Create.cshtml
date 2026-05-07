@@ -1,0 +1,105 @@
+﻿@model Finn.Models.Prihod
+
+<h1 class="text-center mb-4">
+    Dodavanje prihoda
+</h1>
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        Novi prihod
+
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Iznos prihoda
+                </label>
+
+                <input asp-for="Iznos"
+                       class="form-control" />
+
+                <span asp-validation-for="Iznos"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Kategorija prihoda
+                </label>
+
+                <input asp-for="Kategorija"
+                       class="form-control" />
+
+                <span asp-validation-for="Kategorija"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Datum prihoda
+                </label>
+
+                <input asp-for="Datum"
+                       type="date"
+                       class="form-control" />
+
+                <span asp-validation-for="Datum"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Opis prihoda
+                </label>
+
+                <textarea asp-for="Opis"
+                          class="form-control">
+                </textarea>
+
+                <span asp-validation-for="Opis"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success">
+
+                Spremi prihod
+
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+
+                Povratak na prihode
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

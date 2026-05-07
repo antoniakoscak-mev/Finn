@@ -1,0 +1,182 @@
+﻿<h1 class="text-center mb-4">
+    Dashboard
+</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+    <div>
+
+        <a asp-action="Index"
+           asp-route-period="week"
+           class="btn btn-outline-primary btn-sm">
+            Ovaj tjedan
+        </a>
+
+        <a asp-action="Index"
+           asp-route-period="month"
+           class="btn btn-outline-primary btn-sm">
+            Ovaj mjesec
+        </a>
+
+        <a asp-action="Index"
+           asp-route-period="year"
+           class="btn btn-outline-primary btn-sm">
+            Ova godina
+        </a>
+
+    </div>
+
+    <a asp-action="PdfIzvjestaj"
+       class="btn btn-dark btn-sm">
+
+        Preuzmi PDF izvještaj
+
+    </a>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+
+        <div class="card bg-success text-white shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h4>Prihodi</h4>
+
+                <h2>@ViewBag.UkupniPrihodi €</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card bg-danger text-white shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h4>Troškovi</h4>
+
+                <h2>-@ViewBag.UkupniTroskovi €</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card bg-primary text-white shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h4>Stanje</h4>
+
+                <h2>@ViewBag.Stanje €</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h2>Prihodi</h2>
+
+    <a asp-controller="Prihodi"
+       asp-action="Create"
+       class="btn btn-success">
+
+        Dodaj prihod
+
+    </a>
+
+</div>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-success">
+
+            <tr>
+                <th>Iznos</th>
+                <th>Kategorija</th>
+                <th>Datum</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var prihod in ViewBag.Prihodi)
+            {
+                <tr>
+                    <td>@prihod.Iznos €</td>
+                    <td>@prihod.Kategorija</td>
+                    <td>@prihod.Datum.ToShortDateString()</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<hr class="my-5" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h2>Troškovi</h2>
+
+    <a asp-controller="Troskovi"
+       asp-action="Create"
+       class="btn btn-danger">
+
+        Dodaj trošak
+
+    </a>
+
+</div>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-danger">
+
+            <tr>
+                <th>Iznos</th>
+                <th>Kategorija</th>
+                <th>Datum</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var trosak in ViewBag.Troskovi)
+            {
+                <tr>
+                    <td>-@trosak.Iznos €</td>
+                    <td>@trosak.Kategorija</td>
+                    <td>@trosak.Datum.ToShortDateString()</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

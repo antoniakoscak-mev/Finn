@@ -1,0 +1,105 @@
+﻿@model Finn.Models.Trosak
+
+<h1 class="text-center mb-4">
+    Dodavanje troška
+</h1>
+
+<div class="card shadow">
+
+    <div class="card-header bg-danger text-white">
+
+        Novi trošak
+
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Iznos troška
+                </label>
+
+                <input asp-for="Iznos"
+                       class="form-control" />
+
+                <span asp-validation-for="Iznos"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Kategorija troška
+                </label>
+
+                <input asp-for="Kategorija"
+                       class="form-control" />
+
+                <span asp-validation-for="Kategorija"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Datum troška
+                </label>
+
+                <input asp-for="Datum"
+                       type="date"
+                       class="form-control" />
+
+                <span asp-validation-for="Datum"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Opis troška
+                </label>
+
+                <textarea asp-for="Opis"
+                          class="form-control">
+                </textarea>
+
+                <span asp-validation-for="Opis"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-danger">
+
+                Spremi trošak
+
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+
+                Povratak na troškove
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

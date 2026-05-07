@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Finn.Models.Prihod>
+
+<h1 class="text-center mb-4">
+    Prihodi
+</h1>
+
+<div class="card bg-success text-white shadow mb-5">
+
+    <div class="card-body">
+
+        <h4>Ukupni prihodi</h4>
+
+        <h2>
+            @Model.Sum(prihod => prihod.Iznos) €
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        Popis prihoda
+
+    </div>
+
+    <div class="card-body">
+
+        <a asp-action="Create"
+           class="btn btn-success mb-4">
+
+            Dodaj prihod
+
+        </a>
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-success">
+
+                <tr>
+                    <th>Iznos</th>
+                    <th>Kategorija</th>
+                    <th>Datum</th>
+                    <th>Opis</th>
+                    <th>Akcije</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var prihod in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @prihod.Iznos €
+                        </td>
+
+                        <td>
+                            @prihod.Kategorija
+                        </td>
+
+                        <td>
+                            @prihod.Datum.ToShortDateString()
+                        </td>
+
+                        <td>
+                            @prihod.Opis
+                        </td>
+
+                        <td>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@prihod.Id"
+                               class="btn btn-sm btn-danger">
+
+                                Obriši
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
