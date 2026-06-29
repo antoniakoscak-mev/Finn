@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finn", "Finn\Finn.csproj", "{8DB50786-C2AE-4F50-96DC-3FB78AA07D91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finn", "Finn\Finn.csproj", "{8DB50786-C2AE-4F50-96DC-3FB78AA07D91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinnTest", "FinnTest\FinnTest.csproj", "{A96D46F7-BA15-41F0-89E7-BB7A06A46A19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8DB50786-C2AE-4F50-96DC-3FB78AA07D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DB50786-C2AE-4F50-96DC-3FB78AA07D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DB50786-C2AE-4F50-96DC-3FB78AA07D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A96D46F7-BA15-41F0-89E7-BB7A06A46A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A96D46F7-BA15-41F0-89E7-BB7A06A46A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A96D46F7-BA15-41F0-89E7-BB7A06A46A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A96D46F7-BA15-41F0-89E7-BB7A06A46A19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,229 @@
+﻿@model Finn.Models.Budzet
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+            Novi budžet
+        </h2>
+
+        <p class="text-muted small mb-0">
+            Dodavanje novog budžeta
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-light rounded-pill px-4 border">
+
+        Povratak
+
+    </a>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+
+    <div class="card-body p-5">
+
+        @if (TempData["Greska"] != null)
+        {
+            <div class="alert alert-danger rounded-4 mb-4">
+
+                @TempData["Greska"]
+
+            </div>
+        }
+
+        <form asp-action="Create">
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-4">
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Naziv budžeta
+                    </label>
+
+                    <input asp-for="Naziv"
+                           class="form-control form-control-lg rounded-3" />
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Iznos budžeta
+                    </label>
+
+                    <input asp-for="Iznos"
+                           class="form-control form-control-lg rounded-3" />
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Tip budžeta
+                    </label>
+
+                    <select id="tipBudzeta"
+                            class="form-select form-select-lg rounded-3">
+
+                        <option value="mjesecni">
+                            Mjesečni
+                        </option>
+
+                        <option value="godisnji">
+                            Godišnji
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Godina
+                    </label>
+
+                    <input type="number"
+                           id="godina"
+                           class="form-control form-control-lg rounded-3"
+                           value="@DateTime.Now.Year" />
+
+                </div>
+
+                <div class="col-md-6"
+                     id="mjesecDiv">
+
+                    <label class="form-label fw-semibold">
+                        Mjesec
+                    </label>
+
+                    <select id="mjesec"
+                            class="form-select form-select-lg rounded-3">
+
+                        <option value="1">Siječanj</option>
+                        <option value="2">Veljača</option>
+                        <option value="3">Ožujak</option>
+                        <option value="4">Travanj</option>
+                        <option value="5">Svibanj</option>
+                        <option value="6">Lipanj</option>
+                        <option value="7">Srpanj</option>
+                        <option value="8">Kolovoz</option>
+                        <option value="9">Rujan</option>
+                        <option value="10">Listopad</option>
+                        <option value="11">Studeni</option>
+                        <option value="12">Prosinac</option>
+
+                    </select>
+
+                </div>
+
+                <input asp-for="DatumOd" type="hidden" />
+                <input asp-for="DatumDo" type="hidden" />
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary rounded-pill px-5 py-2 mt-5">
+
+                Spremi budžet
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        const tip =
+            document.getElementById('tipBudzeta');
+
+        const mjesecDiv =
+            document.getElementById('mjesecDiv');
+
+        function updateMjesecVisibility() {
+
+            if (tip.value === 'godisnji') {
+
+                mjesecDiv.style.display = 'none';
+
+            }
+            else {
+
+                mjesecDiv.style.display = 'block';
+
+            }
+
+        }
+
+        updateMjesecVisibility();
+
+        tip.addEventListener(
+            'change',
+            updateMjesecVisibility);
+
+        document.querySelector('form')
+            .addEventListener('submit', function () {
+
+                const godina =
+                    parseInt(
+                        document.getElementById('godina').value);
+
+                const tipBudzeta =
+                    document.getElementById('tipBudzeta').value;
+
+                let datumOd;
+                let datumDo;
+
+                if (tipBudzeta === 'mjesecni') {
+
+                    const mjesec =
+                        parseInt(
+                            document.getElementById('mjesec').value);
+
+                    datumOd =
+                        new Date(godina, mjesec - 1, 1);
+
+                    datumDo =
+                        new Date(godina, mjesec, 0);
+
+                }
+                else {
+
+                    datumOd =
+                        new Date(godina, 0, 1);
+
+                    datumDo =
+                        new Date(godina, 11, 31);
+
+                }
+
+                document.getElementById('DatumOd').value =
+                    datumOd.getFullYear() + '-' +
+                    String(datumOd.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(datumOd.getDate()).padStart(2, '0');
+
+                document.getElementById('DatumDo').value =
+                    datumDo.getFullYear() + '-' +
+                    String(datumDo.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(datumDo.getDate()).padStart(2, '0');
+
+            });
+
+    </script>
+
+}

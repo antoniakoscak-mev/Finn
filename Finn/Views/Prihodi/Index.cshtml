@@ -1,50 +1,281 @@
 ﻿@model IEnumerable<Finn.Models.Prihod>
 
-<h1 class="text-center mb-4">
-    Prihodi
-</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="card bg-success text-white shadow mb-5">
+    <div>
 
-    <div class="card-body">
-
-        <h4>Ukupni prihodi</h4>
-
-        <h2>
-            @Model.Sum(prihod => prihod.Iznos) €
+        <h2 class="fw-bold mb-1">
+            Prihodi
         </h2>
 
-    </div>
-
-</div>
-
-<div class="card shadow">
-
-    <div class="card-header bg-success text-white">
-
-        Popis prihoda
+        <p class="text-muted small mb-0">
+            Pregled svih prihoda
+        </p>
 
     </div>
 
-    <div class="card-body">
+    <div class="d-flex gap-2">
+
 
         <a asp-action="Create"
-           class="btn btn-success mb-4">
+           class="btn btn-primary rounded-pill px-4">
 
             Dodaj prihod
 
         </a>
 
-        <table class="table table-bordered table-hover">
+    </div>
 
-            <thead class="table-success">
+</div>
 
-                <tr>
-                    <th>Iznos</th>
-                    <th>Kategorija</th>
-                    <th>Datum</th>
-                    <th>Opis</th>
-                    <th>Akcije</th>
+<div class="card border-0 shadow-sm rounded-4 mb-4"
+     style="background: linear-gradient(
+        135deg,
+         #065f46 0%,
+        #0f766e 50%,
+        #5eead4 100%);">
+
+    <div class="card-body p-4 text-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <p class="small text-uppercase opacity-75 mb-2">
+                    Ukupni prihodi
+                </p>
+
+                <h3 class="fw-bold mb-0">
+                    @Model.Sum(p => p.Iznos).ToString("N2") €
+                </h3>
+
+            </div>
+
+            <div class="fs-2">
+                📈
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- FILTERI -->
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+
+    <div class="card-body p-3">
+
+        <form method="get">
+
+            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+
+                <button type="submit"
+                        name="period"
+                        value=""
+                        onclick="
+                            document.getElementsByName('datumOd')[0].value='';
+                            document.getElementsByName('datumDo')[0].value='';
+                        "
+                        class="btn rounded-pill px-3 py-2 @(string.IsNullOrEmpty(ViewBag.AktivniPeriod) && ViewBag.DatumOd == null && ViewBag.DatumDo == null ? "btn-dark text-white" : "btn-light border")">
+
+                    Svi periodi
+
+                </button>
+
+                <button type="submit"
+                        name="period"
+                        value="ThisMonth"
+                        onclick="
+                            document.getElementsByName('datumOd')[0].value='';
+                            document.getElementsByName('datumDo')[0].value='';
+                        "
+                        class="btn rounded-pill px-3 py-2 @(ViewBag.AktivniPeriod == "ThisMonth" ? "btn-dark text-white" : "btn-light border")">
+
+                    Ovaj mjesec
+
+                </button>
+
+                <button type="submit"
+                        name="period"
+                        value="LastMonth"
+                        onclick="
+                            document.getElementsByName('datumOd')[0].value='';
+                            document.getElementsByName('datumDo')[0].value='';
+                        "
+                        class="btn rounded-pill px-3 py-2 @(ViewBag.AktivniPeriod == "LastMonth" ? "btn-dark text-white" : "btn-light border")">
+
+                    Prošli mjesec
+
+                </button>
+
+                <button type="submit"
+                        name="period"
+                        value="ThisYear"
+                        onclick="
+                            document.getElementsByName('datumOd')[0].value='';
+                            document.getElementsByName('datumDo')[0].value='';
+                        "
+                        class="btn rounded-pill px-3 py-2 @(ViewBag.AktivniPeriod == "ThisYear" ? "btn-dark text-white" : "btn-light border")">
+
+                    Ova godina
+
+                </button>
+
+                <button type="submit"
+                        name="period"
+                        value="LastYear"
+                        onclick="
+                            document.getElementsByName('datumOd')[0].value='';
+                            document.getElementsByName('datumDo')[0].value='';
+                        "
+                        class="btn rounded-pill px-3 py-2 @(ViewBag.AktivniPeriod == "LastYear" ? "btn-dark text-white" : "btn-light border")">
+
+                    Prošla godina
+
+                </button>
+
+            </div>
+
+            <div class="row g-2 align-items-end">
+
+                <div class="col-md-3">
+
+                    <label class="form-label small fw-semibold mb-1">
+                        Datum od
+                    </label>
+
+                    <input type="date"
+                           name="datumOd"
+                           value="@ViewBag.DatumOd"
+                           class="form-control rounded-3 @(ViewBag.DatumOd != null ? "border-dark border-2" : "")" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label small fw-semibold mb-1">
+                        Datum do
+                    </label>
+
+                    <input type="date"
+                           name="datumDo"
+                           value="@ViewBag.DatumDo"
+                           class="form-control rounded-3 @(ViewBag.DatumDo != null ? "border-dark border-2" : "")" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label small fw-semibold mb-1">
+                        Kategorija
+                    </label>
+
+                    <select name="kategorija"
+                            class="form-select rounded-3 @(ViewBag.AktivnaKategorija != null ? "border-dark border-2" : "")">
+
+                        <option value="">
+                            Sve kategorije
+                        </option>
+
+                        @foreach (string kategorija in ViewBag.Kategorije)
+                        {
+                            if (ViewBag.AktivnaKategorija == kategorija)
+                            {
+                                <option value="@kategorija" selected>
+
+                                    @kategorija
+
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@kategorija">
+
+                                    @kategorija
+
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill w-100">
+
+                        Filtriraj
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@if (!string.IsNullOrEmpty(ViewBag.FilterPoruka))
+{
+    <div class="mb-4">
+
+        <span style="
+                font-size:13px;
+                color:#64748b;
+                font-weight:400;
+                  ">
+
+            Prikazani podaci:
+            @ViewBag.FilterPoruka
+
+        </span>
+
+    </div>
+}
+
+<div class="card border-0 shadow-sm rounded-4">
+
+    <div class="card-body p-0">
+
+        <table class="table align-middle mb-0">
+
+            <thead class="border-bottom">
+
+                <tr class="text-muted small">
+
+                    <th class="ps-4 py-3">
+                        Iznos
+                    </th>
+
+                    <th>
+                        Kategorija
+                    </th>
+
+                    <th>
+                        Datum
+                    </th>
+
+                    <th>
+                        Vrsta
+                    </th>
+
+                    <th>
+                        Opis
+                    </th>
+
+                    <th class="text-end pe-4">
+                        Akcije
+                    </th>
+
                 </tr>
 
             </thead>
@@ -55,31 +286,81 @@
                 {
                     <tr>
 
-                        <td>
-                            @prihod.Iznos €
+                        <td class="ps-4 fw-semibold text-primary">
+
+                            @prihod.Iznos.ToString("N2") €
+
                         </td>
 
                         <td>
-                            @prihod.Kategorija
+
+                        
+
+                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
+
+                                    @prihod.Kategorija
+
+                            </span>
+
+                        
+
+                        </td>
+
+                        <td class="text-muted small">
+
+                            @prihod.Datum.ToString("dd/MM/yyyy")
+
                         </td>
 
                         <td>
-                            @prihod.Datum.ToShortDateString()
+
+                            @if (prihod.TipPrihoda == "Predviđeni")
+                            {
+                                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">
+
+                                    Predviđeni
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning-subtle text-warning rounded-pill px-3 py-2">
+
+                                    Nepredviđeni
+
+                                </span>
+                            }
+
                         </td>
 
-                        <td>
+                        <td class="text-muted small">
+
                             @prihod.Opis
+
                         </td>
 
-                        <td>
+                        <td class="text-end pe-4">
 
-                            <a asp-action="Delete"
-                               asp-route-id="@prihod.Id"
-                               class="btn btn-sm btn-danger">
+                            <div class="d-flex justify-content-end gap-2">
 
-                                Obriši
+                                <a asp-action="Edit"
+                                   asp-route-id="@prihod.Id"
+                                   class="btn btn-sm btn-light border rounded-pill px-3">
 
-                            </a>
+                                    Uredi
+
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@prihod.Id"
+                                   class="btn btn-sm btn-danger rounded-pill px-3"
+                                   onclick="return confirm('Jeste li sigurni da želite obrisati prihod?')">
+
+                                    Obriši
+
+                                </a>
+
+                            </div>
 
                         </td>
 

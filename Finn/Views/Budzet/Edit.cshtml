@@ -1,0 +1,245 @@
+﻿@model Finn.Models.Budzet
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+    <div>
+
+        <h1 class="fw-bold display-6 mb-1">
+            Uredi budžet
+        </h1>
+
+        <p class="text-muted mb-0">
+            Uređivanje budžeta
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-light rounded-pill px-4 border">
+
+        Povratak
+
+    </a>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+
+    <div class="card-body p-5">
+
+        <form asp-action="Edit">
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-4">
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Naziv budžeta
+                    </label>
+
+                    <input asp-for="Naziv"
+                           class="form-control form-control-lg rounded-3" />
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Iznos budžeta
+                    </label>
+
+                    <input asp-for="Iznos"
+                           class="form-control form-control-lg rounded-3" />
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Tip budžeta
+                    </label>
+
+                    <select id="tipBudzeta"
+                            class="form-select form-select-lg rounded-3">
+
+                        @if (Model.DatumOd.Year == Model.DatumDo.Year
+                        && Model.DatumOd.Month == Model.DatumDo.Month)
+                        {
+                            <option value="mjesecni" selected>
+                                Mjesečni
+                            </option>
+
+                            <option value="godisnji">
+                                Godišnji
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="mjesecni">
+                                Mjesečni
+                            </option>
+
+                            <option value="godisnji" selected>
+                                Godišnji
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Godina
+                    </label>
+
+                    <input type="number"
+                           id="godina"
+                           class="form-control form-control-lg rounded-3"
+                           value="@Model.DatumOd.Year" />
+
+                </div>
+
+                <div class="col-md-6"
+                     id="mjesecDiv">
+
+                    <label class="form-label fw-semibold">
+                        Mjesec
+                    </label>
+
+                    <select id="mjesec"
+                            class="form-select form-select-lg rounded-3">
+
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            if (Model.DatumOd.Month == i)
+                            {
+                                <option value="@i" selected>
+
+                                    @(new DateTime(2024, i, 1)
+                                        .ToString("MMMM"))
+
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@i">
+
+                                    @(new DateTime(2024, i, 1)
+                                        .ToString("MMMM"))
+
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                </div>
+
+                <input asp-for="DatumOd" type="hidden" />
+                <input asp-for="DatumDo" type="hidden" />
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-dark rounded-pill px-5 py-2 mt-5">
+
+                Spremi promjene
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        const tip =
+            document.getElementById('tipBudzeta');
+
+        const mjesecDiv =
+            document.getElementById('mjesecDiv');
+
+        function updateMjesecVisibility() {
+
+            if (tip.value === 'godisnji') {
+
+                mjesecDiv.style.display = 'none';
+
+            }
+            else {
+
+                mjesecDiv.style.display = 'block';
+
+            }
+
+        }
+
+        updateMjesecVisibility();
+
+        tip.addEventListener('change',
+            updateMjesecVisibility);
+
+        document.querySelector('form')
+            .addEventListener('submit', function () {
+
+                const godina =
+                    parseInt(
+                        document.getElementById('godina').value);
+
+                const tipBudzeta =
+                    document.getElementById('tipBudzeta').value;
+
+                let datumOd;
+                let datumDo;
+
+                if (tipBudzeta === 'mjesecni') {
+
+                    const mjesec =
+                        parseInt(
+                            document.getElementById('mjesec').value);
+
+                    datumOd =
+                        new Date(godina, mjesec - 1, 1);
+
+                    datumDo =
+                        new Date(godina, mjesec, 0);
+
+                }
+                else {
+
+                    datumOd =
+                        new Date(godina, 0, 1);
+
+                    datumDo =
+                        new Date(godina, 11, 31);
+
+                }
+
+                document.getElementById('DatumOd').value =
+                    datumOd.getFullYear() + '-' +
+                    String(datumOd.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(datumOd.getDate()).padStart(2, '0');
+
+                document.getElementById('DatumDo').value =
+                    datumDo.getFullYear() + '-' +
+                    String(datumDo.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(datumDo.getDate()).padStart(2, '0');
+
+            });
+
+    </script>
+
+}

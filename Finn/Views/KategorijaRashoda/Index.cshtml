@@ -1,0 +1,115 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<Finn.Models.KategorijaRashoda>
+
+<a asp-controller="Troskovi"
+   asp-action="Index"
+   class="btn btn-light border rounded-pill px-4 mb-4">
+
+    Povratak
+
+</a>
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+    <div>
+
+        <h1 class="fw-bold display-6 mb-1">
+            Kategorije rashoda
+        </h1>
+
+        <p class="text-muted mb-0">
+            Upravljanje kategorijama rashoda
+        </p>
+
+    </div>
+
+    <a asp-action="Create"
+       class="btn btn-primary rounded-pill px-4">
+
+        Dodaj kategoriju
+
+    </a>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+
+    <div class="card-body p-4">
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>Kategorija</th>
+
+                    <th class="text-end">
+                        Akcije
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var kategorija in Model)
+                {
+                    <tr>
+
+                        <td>
+
+                            <span class="badge rounded-pill px-4 py-3"
+                                  style="
+                                        background-color:@kategorija.Boja;
+                                        color:white;
+                                        font-size:14px;
+                                        font-weight:500;
+                                          ">
+
+                                @kategorija.Naziv
+
+                            </span>
+
+                        </td>
+
+                        <td class="text-end">
+
+                            @if (!kategorija.Zadana)
+                            {
+                                <a asp-action="Delete"
+                                   asp-route-id="@kategorija.Id"
+                                   class="btn btn-danger btn-sm rounded-pill px-3"
+                                   onclick="return confirm('Jeste li sigurni da želite obrisati kategoriju rashoda?')">
+
+                                    Obriši
+
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+
+                                    Zadana kategorija
+
+                                </span>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

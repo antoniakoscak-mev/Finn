@@ -1,0 +1,70 @@
+﻿@model Finn.Models.LoginViewModel
+
+<div class="row justify-content-center mt-5">
+
+    <div class="col-md-5">
+
+        <div class="card shadow border-0 rounded-4">
+
+            <div class="card-body p-5">
+
+                <h2 class="fw-bold mb-4 text-center">
+                    Prijava
+                </h2>
+
+                @if (ViewBag.Greska != null)
+                {
+                    <div class="alert alert-danger">
+
+                        @ViewBag.Greska
+
+                    </div>
+                }
+
+                <form asp-action="Login">
+
+                    <div class="mb-3">
+
+                        <label>Email</label>
+
+                        <input asp-for="Email"
+                               class="form-control rounded-3" />
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label>Lozinka</label>
+
+                        <input asp-for="Password"
+                               type="password"
+                               class="form-control rounded-3" />
+
+                    </div>
+
+                    <button class="btn btn-dark w-100 rounded-pill">
+
+                        Prijava
+
+                    </button>
+
+                </form>
+
+                <div class="text-center mt-4">
+
+                    <a asp-controller="Auth"
+                       asp-action="Register">
+
+                        Nemate račun? Registrirajte se
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

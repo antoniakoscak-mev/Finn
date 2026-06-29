@@ -1,0 +1,517 @@
+﻿<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@using System.Text.Json
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+            Analitika
+        </h2>
+
+        <p class="text-muted small mb-0">
+            Financijski prikaz i analiza podataka
+        </p>
+
+    </div>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+
+    <div class="card-body p-4">
+
+        <form method="get">
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+
+                    <label class="form-label small fw-semibold">
+                        Period
+                    </label>
+
+                    <select name="period"
+                            class="form-select rounded-3">
+
+                        <option value="">
+                            Svi periodi
+                        </option>
+
+                        <option value="ThisMonth"
+                                selected="@(ViewBag.AktivniPeriod == "ThisMonth")">
+
+                            Ovaj mjesec
+
+                        </option>
+
+                        <option value="LastMonth"
+                                selected="@(ViewBag.AktivniPeriod == "LastMonth")">
+
+                            Prošli mjesec
+
+                        </option>
+
+                        <option value="ThisYear"
+                                selected="@(ViewBag.AktivniPeriod == "ThisYear")">
+
+                            Ova godina
+
+                        </option>
+
+                        <option value="LastYear"
+                                selected="@(ViewBag.AktivniPeriod == "LastYear")">
+
+                            Prošla godina
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label small fw-semibold">
+                        Kategorija
+                    </label>
+
+                    <select name="kategorija"
+                            class="form-select rounded-3">
+
+                        <option value="">
+                            Sve kategorije
+                        </option>
+
+                        @foreach (var kategorija in ViewBag.Kategorije)
+                        {
+                            @if (ViewBag.AktivnaKategorija == kategorija)
+                            {
+                                <option value="@kategorija" selected>
+                                    @kategorija
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@kategorija">
+                                    @kategorija
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                </div>
+
+            
+                <div class="col-md-2">
+
+                    <label class="form-label small fw-semibold">
+                        Datum od
+                    </label>
+
+                    <input type="date"
+                           name="datumOd"
+                           class="form-control rounded-3"
+                           value="@ViewBag.DatumOd" />
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label small fw-semibold">
+                        Datum do
+                    </label>
+
+                    <input type="date"
+                           name="datumDo"
+                           class="form-control rounded-3"
+                           value="@ViewBag.DatumDo" />
+
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill w-100">
+
+                        Filtriraj
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <p class="small text-uppercase text-muted mb-2">
+                    Prihodi
+                </p>
+
+                <h3 class="fw-bold text-primary">
+                    @ViewBag.UkupniPrihodi €
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <p class="small text-uppercase text-muted mb-2">
+                    Rashodi
+                </p>
+
+                <h3 class="fw-bold text-dark">
+                    @ViewBag.UkupniRashodi €
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <p class="small text-uppercase text-muted mb-2">
+                    Stanje
+                </p>
+
+                <h3 class="fw-bold text-success">
+                    @ViewBag.Stanje €
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-4">
+                    Prihodi po kategorijama
+                </h5>
+
+                <canvas id="prihodiChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-4">
+                    Rashodi po kategorijama
+                </h5>
+
+                <canvas id="troskoviChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-4">
+                    Prihodi po mjesecima
+                </h5>
+
+                <canvas id="prihodiMjeseciChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-4">
+                    Rashodi po mjesecima
+                </h5>
+
+                <canvas id="rashodiMjeseciChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const prihodiData =
+    @Html.Raw(JsonSerializer.Serialize(ViewBag.PrihodiGraf));
+
+    const troskoviData =
+    @Html.Raw(JsonSerializer.Serialize(ViewBag.TroskoviGraf));
+
+    const prihodiMjeseciData =
+    @Html.Raw(JsonSerializer.Serialize(ViewBag.PrihodiMjeseci));
+
+    const rashodiMjeseciData =
+    @Html.Raw(JsonSerializer.Serialize(ViewBag.RashodiMjeseci));
+
+    new Chart(
+        document.getElementById('prihodiChart'),
+        {
+            type: 'bar',
+
+            data:
+            {
+                labels:
+                    prihodiData.map(x => x.kategorija),
+
+                datasets:
+                    [{
+                        label: 'Prihodi',
+
+                        data:
+                            prihodiData.map(x => x.iznos),
+
+                        backgroundColor:
+                            'rgba(37,99,235,0.75)',
+
+                        borderRadius: 12,
+
+                        borderSkipped: false
+                    }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    new Chart(
+        document.getElementById('troskoviChart'),
+        {
+            type: 'bar',
+
+            data:
+            {
+                labels:
+                    troskoviData.map(x => x.kategorija),
+
+                datasets:
+                    [{
+                        label: 'Rashodi',
+
+                        data:
+                            troskoviData.map(x => x.iznos),
+
+                        backgroundColor:
+                            'rgba(220,38,38,0.75)',
+
+                        borderRadius: 12,
+
+                        borderSkipped: false
+                    }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    new Chart(
+        document.getElementById('prihodiMjeseciChart'),
+        {
+            type: 'line',
+
+            data:
+            {
+                labels:
+                    prihodiMjeseciData.map(x => x.mjesec),
+
+                datasets:
+                    [{
+                        label: 'Prihodi',
+
+                        data:
+                            prihodiMjeseciData.map(x => x.iznos),
+
+                        borderColor:
+                            'rgb(37,99,235)',
+
+                        backgroundColor:
+                            'rgba(37,99,235,0.15)',
+
+                        fill: true,
+
+                        tension: 0.4,
+
+                        pointRadius: 5,
+
+                        pointHoverRadius: 7
+                    }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    new Chart(
+        document.getElementById('rashodiMjeseciChart'),
+        {
+            type: 'line',
+
+            data:
+            {
+                labels:
+                    rashodiMjeseciData.map(x => x.mjesec),
+
+                datasets:
+                    [{
+                        label: 'Rashodi',
+
+                        data:
+                            rashodiMjeseciData.map(x => x.iznos),
+
+                        borderColor:
+                            'rgb(220,38,38)',
+
+                        backgroundColor:
+                            'rgba(220,38,38,0.15)',
+
+                        fill: true,
+
+                        tension: 0.4,
+
+                        pointRadius: 5,
+
+                        pointHoverRadius: 7
+                    }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+</script>

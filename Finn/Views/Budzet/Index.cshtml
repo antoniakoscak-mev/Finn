@@ -1,0 +1,221 @@
+﻿@using System.Linq
+
+@model IEnumerable<Finn.Models.Budzet>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+            Budžeti
+        </h2>
+
+        <p class="text-muted small mb-0">
+            Pregled svih budžeta
+        </p>
+
+    </div>
+
+    <a asp-action="Create"
+       class="btn btn-primary rounded-pill px-4">
+
+        Dodaj budžet
+
+    </a>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead>
+
+                    <tr class="text-muted">
+
+                        <th class="ps-4 py-3">
+                            Naziv
+                        </th>
+
+                        <th>
+                            Tip
+                        </th>
+
+                        <th>
+                            Budžet
+                        </th>
+
+                        <th>
+                            Potrošeno
+                        </th>
+
+                        <th>
+                            Preostalo
+                        </th>
+
+                        <th>
+                            Razdoblje
+                        </th>
+
+                        <th class="text-end pe-4">
+                            Akcije
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+
+                            <td colspan="7"
+                                class="text-center py-5 text-muted">
+
+                                Nema dodanih budžeta
+
+                            </td>
+
+                        </tr>
+                    }
+
+                    @foreach (var budzet in Model)
+                    {
+                        <tr>
+
+                            <td class="ps-4 fw-semibold">
+
+                                @if (budzet.Naziv.Contains("Hrana"))
+                                {
+                                    <span class="me-2">🍔</span>
+                                }
+                                else if (budzet.Naziv.Contains("Stan"))
+                                {
+                                    <span class="me-2">🏠</span>
+                                }
+                                else if (budzet.Naziv.Contains("Auto"))
+                                {
+                                    <span class="me-2">🚗</span>
+                                }
+                                else if (budzet.Naziv.Contains("Shopping"))
+                                {
+                                    <span class="me-2">🛍️</span>
+                                }
+                                else if (budzet.Naziv.Contains("Put"))
+                                {
+                                    <span class="me-2">✈️</span>
+                                }
+                                else
+                                {
+                                    <span class="me-2">💰</span>
+                                }
+
+                                @budzet.Naziv
+
+                            </td>
+
+                            <td>
+
+                                @if (budzet.DatumOd.Year == budzet.DatumDo.Year
+                               && budzet.DatumOd.Month == budzet.DatumDo.Month)
+                                {
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
+
+                                        Mjesečni
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-dark-subtle text-dark rounded-pill px-3 py-2">
+
+                                        Godišnji
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td class="fw-semibold text-success">
+
+                                @budzet.Iznos.ToString("N2") €
+
+                            </td>
+
+                            <td class="fw-semibold text-danger">
+
+                                @budzet.Potroseno.ToString("N2") €
+
+                            </td>
+
+                            <td class="fw-semibold">
+
+                                @if (budzet.Preostalo >= 0)
+                                {
+                                    <span class="text-success">
+
+                                        @budzet.Preostalo.ToString("N2") €
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">
+
+                                        @budzet.Preostalo.ToString("N2") €
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                @budzet.DatumOd.ToString("dd/MM/yyyy")
+                                -
+                                @budzet.DatumDo.ToString("dd/MM/yyyy")
+
+
+                            <td class="text-end pe-4">
+
+                                <div class="d-flex justify-content-end gap-2">
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@budzet.Id"
+                                       class="btn btn-sm btn-light border rounded-pill px-3">
+
+                                        Uredi
+
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@budzet.Id"
+                                       class="btn btn-sm btn-danger rounded-pill px-3"
+                                       onclick="return confirm('Jeste li sigurni da želite obrisati budžet?')">
+
+                                        Obriši
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
